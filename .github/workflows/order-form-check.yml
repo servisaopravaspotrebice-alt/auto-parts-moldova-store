@@ -1,0 +1,26 @@
+name: Check AutoPiese order submission
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'server.js'
+      - 'lib/order-reference.js'
+      - 'public/index.html'
+      - 'public/app.js'
+      - 'public/vin-lens.js'
+      - 'tests/order-form.test.mjs'
+      - '.github/workflows/order-form-check.yml'
+jobs:
+  order-form:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Check JavaScript syntax
+        run: npm run check && node --check public/vin-lens.js && node --check public/checkout.js
+      - name: Run regression tests
+        run: npm test

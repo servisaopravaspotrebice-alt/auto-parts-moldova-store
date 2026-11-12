@@ -106,7 +106,7 @@ el('vlApply').addEventListener('click',()=>{
  if(value.length===17&&!/^[A-HJ-NPR-Z0-9]{17}$/.test(value)){setStatus(text().invalid);return}
  input.value=value;
  input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));
- document.getElementById('vinStatus').textContent=value.length===17?text().added:text().invalid;
+ document.getElementById('vinStatus').textContent=text().added;
  close();input.focus();
 });
 dialog.addEventListener('close',()=>{state.requestSerial++;state.drag=null});

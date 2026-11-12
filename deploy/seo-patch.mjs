@@ -2,6 +2,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 const target=path.join(process.cwd(),'server.js');
+
+const gscToken='AMo-BjLLFaVKgAVXzEhdLAdXKRxvqSPcepXkkwLssW0';
+const indexFile=path.join(process.cwd(),'public','index.html');
+if(fs.existsSync(indexFile)){
+ const html=fs.readFileSync(indexFile,'utf8');
+ if(!html.includes(gscToken)){
+  const tag='<meta name="google-site-verification" content="'+gscToken+'">';
+  if(/<\/head>/i.test(html))fs.writeFileSync(indexFile,html.replace(/<\/head>/i,tag+'</head>'));
+ }
+}
+
 const locales={
 ro:['Piese auto noi și second-hand în Moldova | AutoPiese Moldova','Piese auto noi, folosite și recondiționate în Moldova. Solicitați piese după VIN, cod OEM, marcă sau model. Compatibilitatea se verifică înainte de comandă.'],
 ru:['Автозапчасти в Молдове — подбор по VIN и OEM | AutoPiese Moldova','Новые, б/у и восстановленные автозапчасти в Молдове. Подбор по VIN, OEM-коду или модели авто. Наличие и совместимость уточняются перед заказом.'],

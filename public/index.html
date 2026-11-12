@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="ro">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>AutoPiese Moldova — piese auto noi și second-hand</title>
+<meta content="Piese auto noi și second-hand în Moldova. Căutați după marcă, model, VIN sau cod OEM și trimiteți cererea fără cont." name="description"/><link href="https://autopiese-moldova-full.onrender.com/" rel="canonical"/>
+<meta content="#090909" name="theme-color"/><meta content="index,follow" name="robots"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="/styles.css" rel="stylesheet"/><link href="/extra.css" rel="stylesheet"/><script defer="" src="/app.js"></script><script defer="" src="/extra.js"></script>
+<link href="/conversion.css" rel="stylesheet"/><script defer="True" src="/conversion.js"></script><script defer="" src="/checkout.js"></script><link href="/checkout.css" rel="stylesheet"/><link href="/cart-redesign.css" rel="stylesheet"/><link href="/vin-lens.css" rel="stylesheet"/><script defer="" src="/vin-lens-core.js"></script><script defer="" src="/vin-lens.js"></script><link href="/contact-modern.css" rel="stylesheet"/><script defer="True" src="/contact-modern.js"></script></head>
+<body><aside aria-label="Быстрая связь с консультантом" class="contact-rail"><a class="rail-phone" href="tel:+37368712418" title="Позвонить консультанту">☎<span class="rail-number">+373 687 12 418</span></a><a class="rail-wa" href="https://wa.me/37368712418" rel="noopener" target="_blank" title="WhatsApp">W</a><a class="rail-viber" href="viber://chat?number=%2B37368712418" title="Viber">V</a></aside>
+<header class="topbar"><div class="container bar">
+<a aria-label="AutoPiese Moldova" class="brand" href="/"><span class="brand-mark">A<span class="brand-dot">.</span></span><span class="brand-words"><b>AUTOPIESE</b><small>MOLDOVA</small></span></a>
+<nav class="main-nav"><a data-i="catalogNav" href="#parts">Catalog</a><a data-i="requestNav" href="#request">Cere o piesă</a><a data-i="howNav" href="#how">Cum funcționează</a></nav>
+<div class="bar-actions"><label class="sr-only" for="language">Language</label><select aria-label="Language" id="language"><option value="ro">RO</option><option value="ru">RU</option><option value="uk">UA</option><option value="en">EN</option></select>
+<label class="sr-only" for="currency">Currency</label><select aria-label="Currency" id="currency"><option>MDL</option><option>EUR</option><option>USD</option><option>RON</option></select>
+<button aria-label="Cart" class="cart-btn" id="cartOpen" type="button">🛒 <span id="cartCount">0</span></button></div></div></header>
+<main>
+<section class="hero conversion-hero" id="request"><div class="container conversion-grid"><div class="conversion-left">
+<span class="conversion-tag" data-conv="tag">● PIESE AUTO NOI ȘI SECOND-HAND · MOLDOVA</span>
+<h1 data-conv="headline">Cauți o piesă? <span>Găsim varianta potrivită pentru mașina ta!</span></h1>
+<p class="conversion-lead" data-conv="lead">Fără cataloage complicate. Scanează VIN-ul, spune-ne ce piesă cauți și lasă numărul — un consultant te ajută cu alegerea și prețul.</p>
+<strong class="conversion-step-heading" data-conv="stepsHead">4 pași simpli</strong>
+<div class="conversion-steps">
+<div class="step"><i>01</i><div><b data-conv="step1">Scanează VIN-ul</b><small data-conv="step1sub">Fotografiază sau introdu manual</small></div></div>
+<div class="step"><i>02</i><div><b data-conv="step2">Scrie piesa</b><small data-conv="step2sub">Denumirea sau o scurtă descriere</small></div></div>
+<div class="step"><i>03</i><div><b data-conv="step3">Lasă numărul</b><small data-conv="step3sub">Ca să te putem contacta</small></div></div>
+<div class="step"><i>04</i><div><b data-conv="step4">Apasă „Trimite”</b><small data-conv="step4sub">Te ajutăm să găsești piesa</small></div></div>
+</div>
+<div class="speed-hook"><b data-conv="speed">Mai puțin de un minut pentru a trimite cererea!</b><p data-conv="speedSub">Apoi un consultant te va contacta pentru a verifica potrivirea și prețul.</p></div>
+<div class="conversion-channels"><a href="tel:+37368712418">☎ +373 687 12 418</a><a href="https://wa.me/37368712418" rel="noopener" target="_blank">WhatsApp</a><a href="viber://chat?number=%2B37368712418">Viber</a></div>
+</div><div class="conversion-form-frame"><div class="conversion-form-heading"><span data-conv="formTag">FĂRĂ ÎNREGISTRARE</span><strong data-conv="formTitle">Găsește piesa după VIN</strong><small data-conv="formSub">Completează câteva câmpuri — te ajutăm cu alegerea</small></div><form class="conversion-form" id="requestForm"><div class="form-grid">
+<div class="field"><label data-i="make" for="make">Marca mașinii</label><select id="make" name="brand" required="False"><option data-i="chooseMake" value="">Alegeți marca</option></select></div>
+<div class="field"><label data-i="model" for="model">Model</label><input autocomplete="off" id="model" maxlength="70" name="model" placeholder="Golf, Logan, A4..."/></div>
+<div class="field"><label data-i="year" for="year">Anul</label><input id="year" inputmode="numeric" maxlength="4" name="year" placeholder="2015"/></div>
+<div class="field"><label data-i="vin" for="vin">VIN / cod OEM (opțional)</label><div class="vin-row"><input autocomplete="off" id="vin" maxlength="30" name="vin" placeholder="WVWZZZ... / 7H1422061J"/><button class="vin-upload" id="vinLensOpen" type="button">📷 <span id="vinScanText">Scanează</span></button></div><small aria-live="polite" class="vin-status" id="vinStatus"></small></div>
+<div class="field wide"><label data-i="part" for="part">Ce piesă căutați?</label><input id="part" maxlength="300" name="part" placeholder="Ex.: casetă de direcție, compresor..."/></div>
+<div class="field"><label data-i="yourName" for="buyerName">Numele dvs.</label><input autocomplete="name" id="buyerName" maxlength="120" name="name" placeholder="Nume"/></div>
+<div class="field"><label data-i="phone" for="phone">Telefon *</label><input autocomplete="tel" id="phone" maxlength="22" name="phone" placeholder="+373 ..." required="" type="tel"/></div>
+<div class="field wide"><label data-i="notes" for="comment">Detalii suplimentare (opțional)</label><textarea id="comment" maxlength="500" name="comment" placeholder="..." rows="2"></textarea></div>
+</div><label class="consent"><input id="consent" name="consent" required="" type="checkbox"/><span data-i="consent">Sunt de acord să fiu contactat pentru această cerere și cu prelucrarea datelor furnizate.</span></label><button class="btn btn-primary send-btn" id="submitBtn" type="submit"><span data-i="send">Trimite cererea</span> ↗</button><div aria-live="polite" class="form-msg" id="formMsg" role="status"></div></form></div></div></section><section class="catalog-section" id="parts"><div class="container"><div class="section-head"><div><span class="section-kicker" data-i="catalogKicker">CATALOG DE PIESE</span><h2 data-i="catalogTitle">Găsiți piesa potrivită</h2><p data-i="catalogDesc">Prețuri cu marja magazinului inclusă. Compatibilitatea se confirmă înainte de comandă.</p></div><span class="supplier-tag" data-i="supplierTag">Catalog furnizor verificat</span></div>
+<div class="catalog-toolbar"><div class="catalog-search"><span>⌕</span><input data-placeholder="searchPlaceholder" id="search" placeholder="Căutare după piesă, marcă sau cod OEM" type="search"/></div><select aria-label="Category" id="category"><option data-i="allCategories" value="">Toate categoriile</option><option data-i="steering" value="steering">Casete de direcție</option><option data-i="powersteering" value="powersteering">Pompe servodirecție</option><option data-i="ac" value="ac">Compresoare A/C</option><option data-i="other" value="other">Alte piese</option></select><select aria-label="Condition" id="condition"><option data-i="allConditions" value="">Toate stările</option><option data-i="new" value="new">Nou</option><option data-i="refurbished" value="refurbished">Recondiționat</option><option data-i="used" value="used">Second-hand</option></select></div>
+<div class="catalog-state" id="catalogState"></div><div class="products-grid" id="products"></div><div class="catalog-bottom"><button class="btn btn-outline" data-i="more" id="moreProducts" style="display:none" type="button">Mai multe produse</button><div class="rates-note" id="ratesInfo"></div></div>
+</div></section><section class="brand-section" id="brands"><div class="container"><span class="section-kicker" id="brandEyebrow">MĂRCI AUTO</span><h2 id="brandsHeading">Toate mărcile auto</h2><p class="support-text" id="brandsLead">Căutați piese în funcție de marca automobilului.</p><div class="brands-grid" id="brandsGrid"></div><a class="text-link" href="/marci" id="allBrandsLink">Toate mărcile ↗</a></div></section>
+<section class="how-section" id="how"><div class="container"><div class="section-head"><div><span class="section-kicker" data-i="stepsKicker">FĂRĂ COMPLICAȚII</span><h2 data-i="stepsTitle">Trei pași simpli</h2></div></div><div class="steps"><article><div class="step-number">01</div><h3 data-i="step1">Spuneți-ne ce căutați</h3><p data-i="step1Desc">Marca, modelul, anul sau numărul VIN. Doar ce știți.</p></article><article><div class="step-number">02</div><h3 data-i="step2">Verificăm compatibilitatea</h3><p data-i="step2Desc">Confirmăm disponibilitatea și detaliile înainte de comandă.</p></article><article><div class="step-number">03</div><h3 data-i="step3">Vă contactăm</h3><p data-i="step3Desc">Primiți o ofertă și stabiliți livrarea cu vânzătorul.</p></article></div></div></section>
+<section class="why-section" id="why"><div class="container"><span class="section-kicker" id="whyEyebrow">PENTRU DVS.</span><h2 id="whyHeading">De ce să comandați de la AutoPiese Moldova?</h2><div class="why-grid" id="whyGrid"></div></div></section>
+<section class="reviews-section" id="reviews"><div class="container"><span class="section-kicker" id="reviewEyebrow">ÎNCREDERE</span><h2 id="reviewHeading">Recenziile clienților</h2><div class="reviews-grid" id="reviewGrid"><p id="reviewEmpty">Recenziile verificate vor fi afișate aici.</p></div><a class="text-link" href="/recenzii" id="moreReviews">Mai multe recenzii ↗</a></div></section>
+<section class="consult-section" id="consult"><div class="container consult-inner"><div><span class="section-kicker" id="consultEyebrow">AVEȚI ÎNTREBĂRI?</span><h2 id="consultHeading">Un consultant vă poate ajuta</h2><p id="consultLead">Sunați sau scrieți-ne cu marca, modelul și piesa de care aveți nevoie.</p></div>
+<div class="consult-actions premium-contact-actions">
+<a aria-label="Позвонить консультанту +373 687 12 418" class="premium-contact-phone" href="tel:+37368712418"><span aria-hidden="true" class="premium-phone-icon">☎</span><span class="premium-phone-copy"><small data-contact-text="call">Связаться по телефону</small><strong>+373 687 12 418</strong></span><span aria-hidden="true" class="premium-phone-arrow">↗</span></a>
+<div class="premium-messenger-label" data-contact-text="messengers">Или напишите нам в мессенджер</div>
+<div class="premium-messengers">
+<a aria-label="Написать в WhatsApp" class="premium-messenger whatsapp" href="https://wa.me/37368712418" rel="noopener noreferrer" target="_blank"><img alt="" height="26" loading="lazy" src="https://cdn.simpleicons.org/whatsapp/25D366" width="26"/><span>WhatsApp</span><span aria-hidden="true">↗</span></a>
+<a aria-label="Написать в Viber" class="premium-messenger viber" href="viber://chat?number=%2B37368712418"><img alt="" height="26" loading="lazy" src="https://cdn.simpleicons.org/viber/7360F2" width="26"/><span>Viber</span><span aria-hidden="true">↗</span></a>
+</div>
+</div>
+</div></section>
+</main>
+<footer><div class="container footer-flex"><div class="footer-brand"><b>AUTOPIESE <span>MOLDOVA</span></b><p data-i="footerText">Piese pentru mașina ta, fără complicații.</p><p class="footer-long" id="footerLong"></p><div class="footer-links"><a href="/catalog">Catalog</a><a href="/marci">Mărci</a><a href="/despre-noi">Despre noi</a><a href="/contact">Contact</a><a href="/recenzii">Recenzii</a></div></div><div><span data-i="footerNote">Disponibilitatea, prețul final și livrarea se confirmă de vânzător.</span><p><a href="https://bnm.md/en/content/official-exchange-rates" rel="noopener noreferrer" target="_blank">BNM — curs oficial</a></p><a class="footer-admin-link" href="/admin" id="adminFooterLink">Вход для администратора</a></div></div></footer>
+<div aria-hidden="true" class="modal" id="cartModal">
+<div class="modal-backdrop" id="cartCloseBg"></div>
+<section aria-labelledby="cartTitle" aria-modal="true" class="cart-panel" role="dialog" tabindex="-1">
+<header class="cart-head">
+<div><span class="cart-kicker">AUTOPIESE MOLDOVA</span><h2 data-i="cartTitle" id="cartTitle">Список запчастей</h2></div>
+<button aria-label="Закрыть корзину" class="cart-close" id="cartClose" type="button">✕</button>
+</header>
+<div class="cart-scroll">
+<div class="cart-items" id="cartItems"></div>
+<div class="cart-summary"><div class="cart-summary-caption" id="cartTotalLabel">Итого</div><strong id="cartTotal">0 MDL</strong><small id="cartCountLabel">0 товаров</small></div>
+<form class="cart-checkout" id="cartCheckout">
+<h3 id="checkoutTitle">Данные для заказа</h3>
+<p class="cart-helper" id="checkoutHelp">Консультант свяжется с вами для подтверждения наличия и совместимости.</p>
+<label for="checkoutName" id="checkoutNameLabel">Ваше имя (необязательно)</label>
+<input autocomplete="name" id="checkoutName" maxlength="100" name="name" placeholder="Имя"/>
+<label for="checkoutPhone" id="checkoutPhoneLabel">Телефон для связи *</label>
+<input autocomplete="tel" id="checkoutPhone" inputmode="tel" name="phone" placeholder="+373 ___ __ ___" required="" type="tel"/>
+<label for="checkoutVin" id="checkoutVinLabel">VIN (необязательно)</label>
+<input autocomplete="off" id="checkoutVin" maxlength="17" name="vin" placeholder="17 символов"/>
+<label class="cart-consent"><input id="checkoutConsent" required="" type="checkbox"/><span id="checkoutConsentText">Согласен на обработку данных для связи по заказу</span></label>
+<button class="cart-submit" id="checkoutSubmit" type="submit">ОТПРАВИТЬ ЗАКАЗ ↗</button>
+<p aria-live="polite" id="checkoutStatus" role="status"></p>
+</form>
+</div>
+</section>
+</div>
+</body></html>

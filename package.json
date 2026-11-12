@@ -1,0 +1,22 @@
+{
+  "name": "auto-parts-moldova-store",
+  "version": "3.0.0",
+  "private": true,
+  "description": "AutoPiese Moldova: independent 4-language auto parts store, secure admin, supplier sitemap sync, daily BNM rates",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/app.js && node --check public/admin.js && node --check lib/catalog.js && node --check lib/external-import.js && node --check public/supplier-import.js && node --check lib/storage.js",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "pg": "^8.13.1"
+  }
+}

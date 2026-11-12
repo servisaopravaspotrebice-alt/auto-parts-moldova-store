@@ -1,0 +1,20 @@
+
+.admin-locale-container{display:flex;align-items:center;gap:8px;margin-left:auto;color:#dedede}
+.admin-locale-container label{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700}
+.admin-locale-container select{padding:9px 12px;color:#fff;background:#171717;border:1px solid #585858;border-radius:10px;font:inherit;cursor:pointer}
+.admin-telegram-setup{border:1px solid #5d2330;border-radius:16px;background:#170f12;padding:20px;margin:0 0 20px}
+.admin-telegram-setup h3{font-size:23px;margin:0 0 8px}.admin-telegram-setup p{color:#dfcbd0;line-height:1.55}
+.tg-panel-buttons{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.tg-panel-buttons button{border:1px solid #b01b3b;background:#2b1620;color:#fff;padding:11px 13px;border-radius:10px;font-size:14px;cursor:pointer}
+.tg-panel-buttons button:hover{background:#9f1230}
+#telegramSetupStatus{color:#fff;line-height:1.65;white-space:pre-wrap}
+.tg-panel-help{font-size:12px}
+@media(max-width:580px){.admin-locale-container label span{display:none}.admin-locale-container select{padding:8px 5px}.admin-locale-container{gap:4px}.tg-panel-buttons>*{flex:1 1 100%}}
+/* Keep the language menu visible on narrow mobile screens. */
+@media(max-width:780px){
+ header .bar{display:flex;flex-wrap:wrap;gap:10px 12px;padding:12px 14px}
+ header .bar>a.logo{font-size:16px;flex:1 1 auto;max-width:48%;min-width:130px;margin-right:0}
+ header .bar>span{display:none}
+ .admin-locale-container{order:2;margin-left:auto}
+ header .bar>#logout{order:3;margin-left:0;padding:8px 10px}
+}

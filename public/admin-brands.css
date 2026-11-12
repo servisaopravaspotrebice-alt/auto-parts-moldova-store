@@ -1,0 +1,10 @@
+
+.brand-field{position:relative;min-width:0;display:block}.brand-combobox{position:relative;margin-top:5px}
+.brand-combobox #prodBrand{margin-top:0;padding-right:47px;width:100%;background:#fff;color:#28151f}
+.brand-toggle{position:absolute;right:3px;top:3px;bottom:3px;min-width:39px;background:#f5e9ee;color:#73233e;border:1px solid #e0b9c8;border-radius:7px;font-size:25px;padding:0 7px;line-height:1}
+.brand-toggle:hover,.brand-toggle:focus-visible{background:#ead3dd;color:#4c0d26}
+.brand-suggestions{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:120;max-height:270px;overflow:auto;box-shadow:0 17px 36px #2205103d;background:white;border:1px solid #ca9caf;border-radius:12px;padding:6px;overscroll-behavior:contain}
+.brand-suggestions[hidden]{display:none!important}.brand-option{width:100%;text-align:left;padding:12px 11px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:0;background:white;color:#25111c;font-weight:700;font-size:14px;cursor:pointer}
+.brand-option:hover,.brand-option[aria-selected="true"]{background:#fff0f3;color:#9d123c}.brand-option small{font-weight:500;color:#8b6374}.brand-no-match{padding:13px;color:#7e5367;font-weight:500;line-height:1.5}
+.brand-help{display:block;color:#745b67;margin:5px 0 0;font-size:11px;font-weight:500;line-height:1.5}.brand-auto-status{color:#24704d;font-size:11px;font-weight:600;display:block;min-height:1px;margin-top:3px}
+@media(max-width:670px){.brand-suggestions{max-height:230px}.brand-toggle{min-width:45px}.brand-option{padding:14px 10px;font-size:15px}}

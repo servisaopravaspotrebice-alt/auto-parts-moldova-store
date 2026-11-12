@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import crypto from 'node:crypto';
 import {Store} from './lib/storage.js';
+import {normalizeVinOrOem} from './lib/order-reference.js';
 import {CATEGORIES,SUBCATEGORIES,clean,retailRon,fromSupplier,parseSupplierHtml,parseCatalogPage,parseFeed,parseBnmXml,validUrl,parseRon} from './lib/catalog.js';
 import {localizeName,localizeDescription,productLanguages,productSummary} from './lib/product-locale.js';
 import {normalizePublicUrl,safeFetchPage,discoverCatalog,previewSource,sourceProductFromHtml,externalFeedProducts} from './lib/external-import.js';
@@ -153,7 +154,7 @@ async function handleOrder(req,res){
  const {name,phone,brand,model,year,vin,part,comment,cart=[],language='ro',currency='MDL',consent}=req.body||{};
  if(consent!==true)return res.status(400).json({error:'CONSENT_REQUIRED'});
  const number=sanitizePhone(phone);if(!/^\+?[\d ()-]{7,22}$/.test(number)||number.replace(/\D/g,'').length<8)return res.status(400).json({error:'PHONE_REQUIRED'});
- const vinValue=s(vin,30).toUpperCase().trim();if(vinValue&&!/^[A-HJ-NPR-Z0-9]{17}$/.test(vinValue))return res.status(400).json({error:'VIN_INVALID'});
+ const vinValue=normalizeVinOrOem(vin);if(vinValue===null)return res.status(400).json({error:'VIN_OR_OEM_INVALID'});
  const rows=Array.isArray(cart)?cart.slice(0,50):[];
  if(!rows.length&&!s(part,300))return res.status(400).json({error:'PART_REQUIRED'});
  if(Array.isArray(cart)&&cart.length>50)return res.status(400).json({error:'CART_TOO_LARGE'});

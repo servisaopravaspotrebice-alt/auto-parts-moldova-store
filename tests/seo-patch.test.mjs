@@ -1,4 +1,4 @@
-import {readFileSync,writeFileSync,mkdtempSync,rmSync} from 'node:fs';
+import {readFileSync,writeFileSync,mkdtempSync,rmSync,mkdirSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -29,10 +29,16 @@ test('multilingual SEO patch generates valid, idempotent server code',()=>{
  try{
   const app=path.join(dir,'server.js');
   writeFileSync(app,extract('server.js'));
+  mkdirSync(path.join(dir,'public'));
+  const index=path.join(dir,'public','index.html');
+  writeFileSync(index,extract('public/index.html'));
+
   const run=()=>execFileSync(process.execPath,[path.join(root,'deploy','seo-patch.mjs')],{cwd:dir,stdio:'pipe'});
   run();
   const output=readFileSync(app,'utf8');
   assert.match(output,/SEO_HOME_20261112/);
+  const indexHtml=readFileSync(index,'utf8');
+  assert.match(indexHtml,/<meta name="google-site-verification" content="AMo-BjLLFaVKgAVXzEhdLAdXKRxvqSPcepXkkwLssW0">/);
   assert.match(output,/SEO_SITEMAP_20261112/);
   assert.match(output,/xhtml:link/);
   assert.match(output,/robots:store\.products\(\)\.some/);
@@ -40,5 +46,6 @@ test('multilingual SEO patch generates valid, idempotent server code',()=>{
   execFileSync(process.execPath,['--check',app],{stdio:'pipe'});
   run();
   assert.equal(readFileSync(app,'utf8'),output,'patch must be idempotent');
+  assert.equal(readFileSync(index,'utf8'),indexHtml,'verification tag must not be duplicated');
  } finally{rmSync(dir,{recursive:true,force:true});}
 });

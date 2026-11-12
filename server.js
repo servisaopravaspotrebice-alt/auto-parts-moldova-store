@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import crypto from 'node:crypto';
 import {Store} from './lib/storage.js';
+import {telegramRequest} from './lib/telegram-transport.js';
 import {normalizeVinOrOem} from './lib/order-reference.js';
 import {CATEGORIES,SUBCATEGORIES,clean,retailRon,fromSupplier,parseSupplierHtml,parseCatalogPage,parseFeed,parseBnmXml,validUrl,parseRon} from './lib/catalog.js';
 import {localizeName,localizeDescription,productLanguages,productSummary} from './lib/product-locale.js';
@@ -140,13 +141,11 @@ async function sendTelegramOrder(order){
  }
  if(part.trim())messages.push(part);
  for(let j=0;j<messages.length;j++){
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
-  try{
-   const response=await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:process.env.TELEGRAM_CHAT_ID,text:messages[j],disable_web_page_preview:true}),signal:controller.signal
-   });
-   const data=await response.json().catch(()=>({ok:false}));if(!response.ok||!data.ok)throw Error('TELEGRAM_SEND_FAILED');
-  } finally {clearTimeout(timer)}
+  await telegramBotMethod('sendMessage',{
+   chat_id:process.env.TELEGRAM_CHAT_ID,
+   text:messages[j],
+   disable_web_page_preview:true
+  });
  }
  return messages.length;
 }
@@ -195,23 +194,7 @@ app.post('/api/admin/logout',adminAccess,(req,res)=>{const id=(cookies(req).auto
 const telegramAdminLimit=rateLimit({windowMs:15*60*1000,limit:8,standardHeaders:'draft-7',legacyHeaders:false});
 function telegramConfigured(){return Boolean(process.env.TELEGRAM_BOT_TOKEN&&process.env.TELEGRAM_CHAT_ID)}
 async function telegramBotMethod(method,payload){
- const token=process.env.TELEGRAM_BOT_TOKEN;
- if(!token)throw Error('BOT_TOKEN_MISSING');
- const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),12000);
- try{
-  const response=await fetch(`https://api.telegram.org/bot${token}/${method}`,{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload||{}),signal:controller.signal
-  });
-  const result=await response.json().catch(()=>({ok:false}));
-  if(!response.ok||!result.ok){
-    if(result.error_code===403)throw Error('TELEGRAM_BOT_NOT_STARTED_OR_BLOCKED');
-    if(result.error_code===400)throw Error('TELEGRAM_INVALID_CHAT');
-    if(result.error_code===401)throw Error('TELEGRAM_INVALID_TOKEN');
-    throw Error('TELEGRAM_DELIVERY_FAILED');
-  }
-  return result.result;
- }catch(e){if(e.name==='AbortError')throw Error('TELEGRAM_TIMEOUT');throw e}
- finally{clearTimeout(timer)}
+ return telegramRequest(process.env.TELEGRAM_BOT_TOKEN,method,payload);
 }
 app.get('/api/admin/telegram/status',adminAccess,(req,res)=>{
  res.set('Cache-Control','no-store').json({
@@ -411,7 +394,23 @@ Prices are indicative based on authorised supplier data and BNM exchange rates; 
 app.get('/robots.txt',(req,res)=>res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/admin\nSitemap: ${BASE}/sitemap.xml\n`));
 app.get('/sitemap.xml',(req,res)=>{let paths=['/','/catalog','/marci','/despre-noi','/contact','/recenzii',...CATEGORIES.map(c=>'/categorii/'+c.id),...SITE_BRANDS.map(b=>'/marci/'+slug(b)),...store.products().filter(p=>p.sku&&p.image).map(p=>'/p/'+p.id)];res.type('application/xml').send('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+paths.flatMap(p=>[...LANGS].map(lang=>`<url><loc>${esc(BASE+p+'?lang='+lang)}</loc></url>`)).join('')+'</urlset>')});
 app.get('/health',(req,res)=>res.json({status:'ok',storage:store.mode}));
-const port=Number(process.env.PORT)||10000;app.listen(port,'0.0.0.0',()=>console.log(`AutoPiese Moldova v2 on port ${port}; ${store.mode}`));
+const port=Number(process.env.PORT)||10000;
+app.listen(port,'0.0.0.0',()=>{
+ console.log(`AutoPiese Moldova v2 on port ${port}; ${store.mode}`);
+ if(telegramConfigured()){
+  // Safe read-only probes: never log bot tokens, chat IDs, user profiles or response data.
+  Promise.allSettled([
+   telegramBotMethod('getMe',{}),
+   telegramBotMethod('getChat',{chat_id:process.env.TELEGRAM_CHAT_ID})
+  ]).then(results=>{
+   const statuses=results.map((r,i)=>{
+    const action=i===0?'getMe':'getChat';
+    return action+'='+(r.status==='fulfilled'?'ok':r.reason?.message||'TELEGRAM_PROBE_ERROR');
+   });
+   console.info('Telegram connectivity:',statuses.join(', '));
+  }).catch(()=>{});
+ }
+});
 setTimeout(async()=>{await updateRates();if(process.env.ENABLE_SUPPLIER_SYNC!=='false')syncCatalog().catch(console.error)},3500).unref();
 setInterval(()=>{checkRateSchedule().catch(console.error)},30*1000).unref();
 setInterval(()=>{if(process.env.ENABLE_SUPPLIER_SYNC!=='false')syncCatalog().catch(console.error)},24*60*60*1000).unref();

@@ -18,8 +18,8 @@ test('bad reference input is rejected instead of silently truncated', () => {
 });
 test('vehicle make is optional in the customer form', () => {
   const html=fs.readFileSync(new URL('../public/index.html', import.meta.url),'utf8');
-  const make=html.match(/<select\\s+id="make"[^>]*>/)?.[0]||'';
+  const make=html.match(/<select\s+id="make"[^>]*>/)?.[0]||'';
   assert.ok(make, 'Vehicle make selector not found');
-  assert.doesNotMatch(make,/\\srequired(?:\\s|=|>)/i);
+  assert.doesNotMatch(make,/\srequired(?:\s|=|>)/i);
   assert.match(html,/<button[^>]*id="submitBtn"[^>]*type="submit"/i);
 });

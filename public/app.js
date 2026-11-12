@@ -72,7 +72,7 @@ async function submitForm(e){
  const data=Object.fromEntries(new FormData(form).entries());
  data.cart=cart;data.language=lang;data.currency=curr;data.consent=$('consent').checked;
  const msg=$('formMsg');msg.textContent='';msg.className='form-msg';
- if(!/^\\+?[\\d ()-]{7,22}$/.test(data.phone||'')||(!data.part&&!cart.length)){
+ if(!/^\+?[\d ()-]{7,22}$/.test(data.phone||'')||(!data.part&&!cart.length)){
   msg.textContent=t('formCheck');msg.classList.add('error');return;
  }
  const btn=$('submitBtn');btn.disabled=true;btn.querySelector('span').textContent=t('sending');

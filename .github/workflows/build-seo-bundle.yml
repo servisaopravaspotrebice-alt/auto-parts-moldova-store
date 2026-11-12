@@ -1,0 +1,31 @@
+name: Build SEO deployment bundle
+on:
+  push:
+    branches: [seo/repacked-bundle-20261112]
+permissions:
+  contents: write
+jobs:
+  repack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run SEO tests
+        run: node --test tests/seo-patch.test.mjs
+      - name: Embed tested SEO updates into bundle
+        run: node deploy/repack-seo.mjs
+      - name: Verify bundle and application syntax
+        run: node --test tests/seo-patch.test.mjs
+      - name: Commit bundle only to review branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deploy/store-v7.b64
+          if ! git diff --cached --quiet; then
+            git commit -m "Build SEO-ready deployment archive [skip ci]"
+            git push origin HEAD:seo/repacked-bundle-20261112
+          fi

@@ -23,3 +23,6 @@ if(fs.existsSync(serverFile)){
   fs.writeFileSync(serverFile,t);
  }
 }
+
+// Run the idempotent SEO patch after the existing supplier-safety hotfix.
+await import('./seo-patch.mjs');

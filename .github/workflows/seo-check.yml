@@ -1,0 +1,18 @@
+name: Validate SEO patch
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [seo/multilingual-sitemap-indexing-20261112]
+jobs:
+  seo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check script syntax
+        run: node --check deploy/hotfix.mjs && node --check deploy/seo-patch.mjs
+      - name: Test SEO server patch against bundled app
+        run: node --test tests/seo-patch.test.mjs

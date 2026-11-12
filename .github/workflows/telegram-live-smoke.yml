@@ -1,0 +1,25 @@
+name: Telegram staging smoke (one synthetic request)
+on:
+  push:
+    branches: [test/telegram-smoke-20261112]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit one clearly labeled synthetic inquiry to staging only
+        shell: bash
+        run: |
+          set -eu
+          cat > /tmp/telegram-smoke.json <<'EOF'
+          {"name":"TELEGRAM SMOKE TEST - NOT A CUSTOMER","phone":"00000000","part":"SYSTEM TEST - PLEASE IGNORE, NOT AN ORDER","vin":"","brand":"","model":"","year":"","language":"en","currency":"MDL","consent":true}
+          EOF
+          status=$(curl -sS --retry 0 --connect-timeout 20 --max-time 90 \
+            -o /tmp/telegram-smoke-result.json -w '%{http_code}' \
+            -H 'Content-Type: application/json' \
+            -X POST --data-binary @/tmp/telegram-smoke.json \
+            https://autopiese-moldova-test-v15.onrender.com/api/lead)
+          echo "HTTP status: $status"
+          cat /tmp/telegram-smoke-result.json
+          echo
+          test "$status" = "201"
+          node -e "const fs=require('fs');const r=JSON.parse(fs.readFileSync('/tmp/telegram-smoke-result.json','utf8'));if(r.ok!==true||!r.orderId)process.exit(1)"

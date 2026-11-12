@@ -60,8 +60,45 @@ function renderCart(){
 }
 function openCart(){$('cartModal').classList.add('open');$('cartModal').setAttribute('aria-hidden','false')}
 function closeCart(){$('cartModal').classList.remove('open');$('cartModal').setAttribute('aria-hidden','true')}
-async function submitForm(e){e.preventDefault();const form=$('requestForm');const formData=new FormData(form);const data=Object.fromEntries(formData.entries());data.cart=cart;data.language=lang;data.currency=curr;data.consent=$('consent').checked;
-const msg=$('formMsg');msg.textContent='';msg.className='form-msg';if(!/^\+?[\d ()-]{7,22}$/.test(data.phone||'')||(!data.part&&!cart.length)){msg.textContent=t('formCheck');msg.classList.add('error');return}
-const btn=$('submitBtn');btn.disabled=true;btn.querySelector('span').textContent=t('sending');try{const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const json=await r.json();if(!r.ok)throw Error(json.error||'ERROR');msg.textContent=t('formSuccess');msg.classList.add('success');form.reset();cart=[];saveCart();renderCart()}catch(err){msg.textContent=t(err.message==='TELEGRAM_NOT_CONFIGURED'?'formUnavailable':'formError');msg.classList.add('error')}finally{btn.disabled=false;btn.querySelector('span').textContent=t('send')}}
+const SUBMISSION_ERRORS={
+ ro:{saved:'Cererea a fost înregistrată temporar, dar nu a ajuns în Telegram. Sunați consultantul pentru confirmare. Număr:',reference:'Verificați codul VIN / OEM. Folosiți cel mult 30 de caractere: litere latine, cifre, spații, punct, cratimă sau slash.'},
+ ru:{saved:'Заявка временно записана на сервере, но в Telegram не доставлена. Позвоните консультанту для подтверждения. Номер:',reference:'Проверьте VIN / OEM. Допускается до 30 символов: латинские буквы, цифры, пробел, точка, дефис или косая черта.'},
+ uk:{saved:'Заявку тимчасово записано на сервері, але в Telegram не доставлено. Зателефонуйте консультанту для підтвердження. Номер:',reference:'Перевірте VIN / OEM. Допустимо до 30 символів: латинські літери, цифри, пробіл, крапка, дефіс або скісна риска.'},
+ en:{saved:'The request was temporarily saved on the server but not delivered to Telegram. Call the consultant to confirm. Reference:',reference:'Check the VIN / OEM code. Use up to 30 characters: Latin letters, digits, spaces, dot, hyphen or slash.'}
+};
+async function submitForm(e){
+ e.preventDefault();
+ const form=$('requestForm');
+ const data=Object.fromEntries(new FormData(form).entries());
+ data.cart=cart;data.language=lang;data.currency=curr;data.consent=$('consent').checked;
+ const msg=$('formMsg');msg.textContent='';msg.className='form-msg';
+ if(!/^\\+?[\\d ()-]{7,22}$/.test(data.phone||'')||(!data.part&&!cart.length)){
+  msg.textContent=t('formCheck');msg.classList.add('error');return;
+ }
+ const btn=$('submitBtn');btn.disabled=true;btn.querySelector('span').textContent=t('sending');
+ try{
+  const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  const json=await r.json().catch(()=>({}));
+  if(!r.ok){
+   const messages=SUBMISSION_ERRORS[lang]||SUBMISSION_ERRORS.ro;
+   if(json.saved&&json.orderId){
+    msg.textContent=messages.saved+' '+json.orderId;
+    msg.classList.add('error');
+    return;
+   }
+   if(json.error==='VIN_OR_OEM_INVALID'||json.error==='VIN_INVALID'){
+    msg.textContent=messages.reference;msg.classList.add('error');$('vin').focus();return;
+   }
+   throw Error(json.error||'ERROR');
+  }
+  msg.textContent=t('formSuccess')+(json.orderId?' № '+json.orderId:'');
+  msg.classList.add('success');form.reset();cart=[];saveCart();renderCart();
+ }catch(err){
+  msg.textContent=t(err.message==='TELEGRAM_NOT_CONFIGURED'?'formUnavailable':'formError');
+  msg.classList.add('error');
+ }finally{
+  btn.disabled=false;btn.querySelector('span').textContent=t('send');
+ }
+}
 $('language').addEventListener('change',e=>{lang=e.target.value;localStorage.setItem('autoparts_lang',lang);translate()});$('currency').addEventListener('change',e=>{curr=e.target.value;localStorage.setItem('autoparts_currency',curr);translate()});['category','condition'].forEach(k=>$(k).addEventListener('change',()=>loadProducts()));$('search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadProducts(),250)});$('moreProducts').addEventListener('click',()=>{page++;loadProducts(true)});$('requestForm').addEventListener('submit',submitForm);$('cartOpen').addEventListener('click',openCart);$('cartClose').addEventListener('click',closeCart);$('cartCloseBg').addEventListener('click',closeCart);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart()});
 translate();loadRates();loadProducts();

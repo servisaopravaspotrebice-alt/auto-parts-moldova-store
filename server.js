@@ -32,6 +32,7 @@ const SNAPSHOT_SEEDS=SNAPSHOT_ROWS.map(row=>{const p=fromSupplier({...row,descri
 const SEED_CLEAN=SEED.filter(item=>!SNAPSHOT_SEEDS.some(p=>item.sku&&p.sku&&item.sku===p.sku));
 const store=await new Store(ROOT).init([...SNAPSHOT_SEEDS,...SUPPLIER_SEEDS,...SEED_CLEAN]);
 const app=express();app.disable('x-powered-by');app.set('trust proxy',1);
+if(process.env.STAGING_NO_INDEX==='true')app.use((req,res,next)=>{res.setHeader('X-Robots-Tag','noindex, nofollow, noarchive');next()});
 app.use(helmet({contentSecurityPolicy:false}));
 app.use(express.json({limit:'5mb'}));
 app.use(['/api/lead','/api/orders'],rateLimit({windowMs:15*60*1000,limit:6,standardHeaders:'draft-7',legacyHeaders:false}));
